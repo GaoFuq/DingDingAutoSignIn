@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+
+        <variable
+            name="xx"
+            type="String" />
+    </data>
+
+  <!--  <com.gfq.usefuldemocollections.view.MyViewPager3
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/repository"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/repository"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/repository"/>
+    </com.gfq.usefuldemocollections.view.MyViewPager3>-->
+    <com.gfq.usefuldemocollections.drag.DragLayoutObj
+        android:id="@+id/dgLayout"
+        android:background="@color/colorPrimaryDark"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:background="@color/colorAccent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_expandW"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:background="@color/colorPrimaryDark"
+                android:text="expandW"
+                android:textColor="#fff" />
+
+            <TextView
+                android:id="@+id/tv_reset"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:textColor="#fff"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorPrimaryDark"
+                android:text="reset" />
+
+            <TextView
+                android:id="@+id/tv_expandH"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:textColor="#fff"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorPrimaryDark"
+                android:text="expandH" />
+
+            <ImageView
+                android:id="@+id/iv"
+                android:src="@drawable/repository"
+                android:layout_width="100dp"
+                android:layout_height="100dp"/>
+
+            <Button
+                android:id="@+id/btn_choose_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="选择图片"/>
+
+            <Button
+                android:id="@+id/btn_take_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="拍照"/>
+
+        </LinearLayout>
+
+
+
+
+    </com.gfq.usefuldemocollections.drag.DragLayoutObj>
+</layout>
