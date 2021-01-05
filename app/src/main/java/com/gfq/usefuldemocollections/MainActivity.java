@@ -1,29 +1,14 @@
 package com.gfq.usefuldemocollections;
 
-import android.Manifest;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.accessibility.AccessibilityEvent;
-import android.view.accessibility.AccessibilityNodeInfo;
 
-
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
-
-import java.io.IOException;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,26 +24,52 @@ public class MainActivity extends AppCompatActivity {
 //adb shell pm grant 包名 android.permission.WRITE_SECURE_SETTINGS
 //adb shell pm grant com.gfq.usefuldemocollections android.permission.REAL_GET_TASKS
 
-        Settings.Secure.putString(getContentResolver(), Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES, "com.gfq.usefuldemocollections");
-        Settings.Secure.putString(getContentResolver(), Settings.Secure.ACCESSIBILITY_ENABLED, "1");//1表示开启
+//        Settings.Secure.putString(getContentResolver(), Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES, "com.gfq.usefuldemocollections");
+//        Settings.Secure.putString(getContentResolver(), Settings.Secure.ACCESSIBILITY_ENABLED, "1");//1表示开启
 
-        Intent intent = new Intent();
-        intent.setComponent(new ComponentName("com.gfq.usefuldemocollections","MyAccessibilityService"));
-        startService(intent);
 
-        startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
+        findViewById(R.id.bbb).setOnClickListener(v -> {
+            requestSettingCanDrawOverlays();
+        });
 
-//        findViewById(R.id.bbb).setOnClickListener(v -> openDD());
+        findViewById(R.id.openService).setOnClickListener(v -> {
+//            Intent intent = new Intent();
+//            intent.setComponent(new ComponentName("com.gfq.usefuldemocollections", "MyAcceService"));
+            startService(new Intent(this,MyAcceService.class));
+        });
 
+        findViewById(R.id.openAuto).setOnClickListener(v -> {
+            startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
+        });
+
+
+
+    }
+
+    //权限打开
+    private void requestSettingCanDrawOverlays() {
+        int sdkInt = Build.VERSION.SDK_INT;
+        if (sdkInt >= Build.VERSION_CODES.O) {//8.0以上
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+            startActivityForResult(intent, 1);
+        } else if (sdkInt >= Build.VERSION_CODES.M) {//6.0-8.0
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+            intent.setData(Uri.parse("package:" + getPackageName()));
+            startActivityForResult(intent, 1);
+        } else {//4.4-6.0以下
+            //无需处理了
+        }
     }
 
     private void openDD() {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_MAIN);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setComponent(new ComponentName("com.alibaba.android.rimet","com.alibaba.android.rimet.biz.LaunchHomeActivity"));
+        intent.setComponent(new ComponentName("com.alibaba.android.rimet", "com.alibaba.android.rimet.biz.LaunchHomeActivity"));
 //        intent.setComponent(new ComponentName("com.gfq.main","com.gfq.main.MainAppActivity"));
         startActivity(intent);
     }
+
+
 
 }
