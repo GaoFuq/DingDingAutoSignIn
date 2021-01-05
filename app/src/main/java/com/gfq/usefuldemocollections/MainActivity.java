@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,18 +33,16 @@ public class MainActivity extends AppCompatActivity {
             requestSettingCanDrawOverlays();
         });
 
-        findViewById(R.id.openService).setOnClickListener(v -> {
-//            Intent intent = new Intent();
-//            intent.setComponent(new ComponentName("com.gfq.usefuldemocollections", "MyAcceService"));
-            startService(new Intent(this,MyAcceService.class));
-        });
+        //无障碍的服务不需要手动开启
+//        findViewById(R.id.openService).setOnClickListener(v -> {
+////            Intent intent = new Intent();
+////            intent.setComponent(new ComponentName("com.gfq.usefuldemocollections", "MyAcceService"));
+//            startService(new Intent(this,MyAcceService.class));
+//        });
 
         findViewById(R.id.openAuto).setOnClickListener(v -> {
             startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
         });
-
-
-
     }
 
     //权限打开

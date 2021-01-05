@@ -9,11 +9,11 @@
         android:text="打开悬浮窗权限"
         android:layout_width="match_parent"
         android:layout_height="50dp"/>
-    <Button
+ <!--   <Button
         android:id="@+id/openService"
         android:text="开启服务"
         android:layout_width="match_parent"
-        android:layout_height="50dp"/>
+        android:layout_height="50dp"/>-->
 
     <Button
         android:id="@+id/openAuto"

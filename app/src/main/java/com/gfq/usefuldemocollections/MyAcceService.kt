@@ -43,7 +43,10 @@ class MyAcceService : AccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        if (!checkTime()) return
+        if (!checkTime()){
+            return
+        }
+
 
         val nodeInfo = rootInActiveWindow
 
@@ -142,7 +145,7 @@ class MyAcceService : AccessibilityService() {
         }
         Log.e("xx ", desc)
         Log.e("xx ", "现在时间： $time")
-        floatView?.setText("现在时间：$time \n $desc")
+        floatView?.setText(" 现在时间：$time \n $desc")
         return timeEnough
     }
 
