@@ -10,7 +10,6 @@ import android.graphics.Path
 import android.graphics.Rect
 import android.os.Build
 import android.util.Log
-import android.view.View
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.Toast
@@ -20,10 +19,12 @@ import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.O)
 class MyAcceService : AccessibilityService() {
+    private var isDaka: Boolean = false // 是否已经打卡
     var rect = Rect()
     var count = 0 // 每失败5次，就重启钉钉
     var canStartService = true // 钉钉已打开，就设为false
     private var floatView: FloatView? = null
+    var workTime = "上班" // 班次
     override fun onServiceConnected() {
         super.onServiceConnected()
         Toast.makeText(App.context, "自动打卡服务已开启", Toast.LENGTH_SHORT).show()
@@ -35,15 +36,18 @@ class MyAcceService : AccessibilityService() {
                 if (canStartService && checkTime()) {
                     closeAndRestartDingDing()
                 }
+                if (isDaka) {
+                    checkTime()
+                }
             }
-        }, 1000, 3000)
+        }, 1000, 5000)
 
         floatView?.show()
 //        closeAndRestartDingDing()
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
-        if (!checkTime()){
+        if (!checkTime()) {
             return
         }
 
@@ -56,6 +60,7 @@ class MyAcceService : AccessibilityService() {
 
 
             Thread.sleep(1000)
+
 
             if (count > 6) {
                 closeAndRestartDingDing()
@@ -89,29 +94,13 @@ class MyAcceService : AccessibilityService() {
                 if (list.size > 0) {
                     val webViewNodeInfo = list[0]?.getChild(0)?.getChild(0)?.getChild(0)
                     val child = webViewNodeInfo?.getChild(1)?.getChild(2)
-                    val shangBan = child?.getChild(0)//上班打卡区域
-                    val xiaBan = child?.getChild(1)//下班打卡区域
-                    val xiaBanButton = xiaBan?.getChild(0)?.getChild(2)//下班打卡按钮
-
-                    val childCount = xiaBanButton?.childCount
-                    var description = ""
-                    if (childCount == 2) {//在考勤范围内
-                        description = xiaBanButton.getChild(0)?.contentDescription.toString()//下班打卡文本
-                    } else if (childCount == 3) { //外勤
-                        description = xiaBanButton.getChild(1)?.contentDescription.toString()//外勤打卡文本
-                    }
-                    Log.e("xx", "description $description")
+                    val shangBanButton = child?.getChild(0)?.getChild(0)?.getChild(2)//上班打卡按钮
+                    val xiaBanButton = child?.getChild(1)?.getChild(0)?.getChild(2)//下班打卡按钮
 
 
-
-                    if ("下班打卡" == description) {
-                        xiaBanButton?.performAction(AccessibilityNodeInfo.ACTION_CLICK)
-                        Log.e("xx", "点击下班！！！！")
-                    } else if (backLayout.size > 0) {
-                        Thread.sleep(3000)
-                        backLayout[0]?.performAction(AccessibilityNodeInfo.ACTION_CLICK) //返回上一界面
-                        Log.e("xx", "未到下班时间 或 外勤")
-                        floatView?.setText("未到下班时间 或 外勤")
+                    when (workTime) {
+                        "上班" -> handleClick(shangBanButton, backLayout)
+                        "下班" -> handleClick(xiaBanButton, backLayout)
                     }
                 }
                 count++
@@ -127,24 +116,63 @@ class MyAcceService : AccessibilityService() {
 
     }
 
+    private fun handleClick(button: AccessibilityNodeInfo?, backLayout: MutableList<AccessibilityNodeInfo>) {
+        button.runCatching {
+            isDaka = true
+            return
+        }
+        val childCount = button?.childCount
+        var description = ""
+        if (childCount == 2) {//在考勤范围内
+            description = button.getChild(0)?.contentDescription.toString()//正常打卡文本
+        } else if (childCount == 3) { //外勤
+            description = button.getChild(1)?.contentDescription.toString()//外勤打卡文本
+        }
+        Log.e("xx", "description $description")
+
+
+        when (description) {
+            "上班打卡" -> {
+                button?.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+                floatView?.setText("上班打卡成功")
+            }
+            "下班打卡" -> {
+                button?.performAction(AccessibilityNodeInfo.ACTION_CLICK)
+                floatView?.setText("下班打卡成功")
+            }
+            else -> if (backLayout.size > 0) {
+                Thread.sleep(3000)
+                backLayout[0].performAction(AccessibilityNodeInfo.ACTION_CLICK) //返回上一界面
+                floatView?.setText("未到上/下班时间 或 外勤")
+            }
+        }
+    }
+
     private fun checkTime(): Boolean {
         val time = LocalTime.now()
         var timeEnough = false
         var desc = "不在打卡时间范围"
         if (time.hour == 17 && time.minute > 30) {
             timeEnough = true
+            workTime = "下班"
             desc = "在下班打卡时间范围内"
         }
         if (time.hour in 18..20) {
             timeEnough = true
+            workTime = "下班"
             desc = "在下班打卡时间范围内"
         }
-        if (time.hour in 8..10) {
+        if (time.hour in 8..11) {
             desc = "在上班打卡时间范围内"
+            workTime = "上班"
             timeEnough = true
         }
-        Log.e("xx ", desc)
-        Log.e("xx ", "现在时间： $time")
+        if (time.hour in 0..7 || time.hour in 12..16 || time.hour in 20..23) {
+            isDaka = false
+        }
+        if (isDaka) {
+            desc = "$workTime 已打卡"
+        }
         floatView?.setText(" 现在时间：$time \n $desc")
         return timeEnough
     }
