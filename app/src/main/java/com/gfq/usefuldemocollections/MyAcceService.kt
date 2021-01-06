@@ -43,7 +43,6 @@ class MyAcceService : AccessibilityService() {
         }, 1000, 5000)
 
         floatView?.show()
-//        closeAndRestartDingDing()
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
