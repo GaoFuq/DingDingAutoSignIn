@@ -10,9 +10,9 @@ import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import com.gfq.usefuldemocollections.MainActivity.*
 import org.litepal.LitePal
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
 import java.util.*
 
@@ -24,6 +24,26 @@ class MyAcceService : AccessibilityService() {
     private val XIA_BAN = "下班"
     private val DEFALUT = "打卡时间范围之外"
     private var workTime = DEFALUT
+
+
+    //修改时间，模拟上午或者下午
+    private fun modifyTimeIfNeed(): LocalTime {
+        if (mockShangWuTime) {
+            return LocalTime.of(8, 20)
+        }
+        if (mockXiaTime) {
+            return LocalTime.of(18, 40)
+        }
+        return LocalTime.now()
+    }
+
+    private fun modifyDateIfNeed(): LocalDate {
+        if (mockDayPlus1) {
+            return LocalDate.now().plusDays(1)
+        }
+        return LocalDate.now()
+    }
+
     override fun onServiceConnected() {
         super.onServiceConnected()
         Log.e("xx", "onServiceConnected")
@@ -37,21 +57,19 @@ class MyAcceService : AccessibilityService() {
                 if (data == null) {
                     createAndSaveBean()//第一次打开没有数据
                 } else {
-                    val now = LocalDate.now()
+                    val now = modifyDateIfNeed()
                     if (now.toString() != data.date) {
                         createAndSaveBean()//创建新的一天
                         floatView?.setText("新的一天")
                     } else {
                         //test
                         count++
-//                        data.shangBanDaka = true
                         //处理逻辑
                         mainLogic(data)
-
-
                     }
                 }
             }
+
 
             private fun mainLogic(data: DataBean) {
                 floatView?.setText("当前日期：${data.date}")
@@ -78,8 +96,7 @@ class MyAcceService : AccessibilityService() {
             }
 
             private fun checkXiaBanTime(): Boolean {
-                val time = LocalTime.now()
-//                val time = LocalTime.now().plusHours(2)
+                val time = modifyTimeIfNeed()
                 var desc = "准备下班打卡"
                 var timeEnough = false
                 workTime = DEFALUT
@@ -87,13 +104,15 @@ class MyAcceService : AccessibilityService() {
                     desc = "在下班打卡时间范围内"
                     workTime = XIA_BAN
                     timeEnough = true
+                }else{
+                    desc = "不在下班打卡时间范围内"
                 }
                 floatView?.setText(" $time \n repeat: $count \n $desc")
                 return timeEnough
             }
 
             private fun checkShangBanTime(): Boolean {
-                val time = LocalTime.now().plusHours(-8)
+                val time = modifyTimeIfNeed()
                 var desc = "准备上班打卡"
                 var timeEnough = false
                 workTime = DEFALUT
@@ -101,6 +120,8 @@ class MyAcceService : AccessibilityService() {
                     desc = "在上班打卡时间范围内"
                     workTime = SHANG_BAN
                     timeEnough = true
+                }else{
+                    desc = "不在上班打卡时间范围内"
                 }
                 floatView?.setText(" $time \n repeat: $count \n $desc")
                 return timeEnough
@@ -109,11 +130,12 @@ class MyAcceService : AccessibilityService() {
 
             private fun createAndSaveBean() {
                 val dataBean = DataBean()
-                dataBean.date = LocalDate.now().toString()
+                dataBean.date = modifyDateIfNeed().toString()
                 dataBean.save()
             }
         }, 1000, 1000 * 10)
     }
+
 
     //跳转到打卡界面
     private fun jump2Daka(eventType: Int, nodeInfo: AccessibilityNodeInfo) {
@@ -194,7 +216,7 @@ class MyAcceService : AccessibilityService() {
 
     private fun handleClick(button: AccessibilityNodeInfo?, backLayout: AccessibilityNodeInfo): Boolean {
         val childCount = button?.childCount
-        var description = ""
+        var description = "重试中..."
         val b = when (childCount) {
             2 -> {//在考勤范围内
                 description = button.getChild(0)?.contentDescription.toString()//正常打卡文本

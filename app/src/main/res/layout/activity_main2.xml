@@ -4,38 +4,114 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/bbb"
-        android:text="打开悬浮窗权限"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"/>
- <!--   <Button
-        android:id="@+id/openService"
-        android:text="开启服务"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"/>-->
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/bbb"
+            android:text="打开悬浮窗权限"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
 
-    <Button
-        android:id="@+id/openAuto"
-        android:text="开启无障碍"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"/>
+        <Button
+            android:id="@+id/openAuto"
+            android:text="开启无障碍"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/write"
-        android:text="写入数据"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"/>
 
-    <Button
-    android:id="@+id/read"
-    android:text="读取数据"
-    android:layout_width="match_parent"
-    android:layout_height="50dp"/>
-
-    <Button
-        android:id="@+id/clear"
-        android:text="清除数据"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="50dp"/>
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:gravity="center"
+        android:textColor="@color/colorPrimary"
+        android:background="#cdcdcd"
+        android:text="模拟操作"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/write"
+            android:text="写入当日默认数据"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/read"
+            android:text="读取数据"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/clear"
+            android:text="清除数据"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/mockShangBanTime"
+            android:text="时间为上午"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/mockXiaBanTime"
+            android:text="时间为下午"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/mockClearTime"
+            android:text="时间清除"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/mockShangBan"
+            android:text="上班已打卡"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/mockXiaBan"
+            android:text="下班已打卡"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/dayPlus1"
+            android:text="日期加一天"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/content"
+        android:background="#363636"
+        android:padding="5dp"
+        android:textSize="16sp"
+        android:text="content"
+        android:textColor="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>

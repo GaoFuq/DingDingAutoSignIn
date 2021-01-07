@@ -20,6 +20,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static boolean mockShangWuTime = false;
+    public static boolean mockXiaTime = false;
+    public static boolean mockDayPlus1 = false;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -52,21 +55,59 @@ public class MainActivity extends AppCompatActivity {
             dataBean.saveOrUpdate();
         });
 
+        TextView tvContent = findViewById(R.id.content);
+
         findViewById(R.id.read).setOnClickListener(v -> {
             List<DataBean> all = LitePal.findAll(DataBean.class);
-            Log.e("xx", "size = " + all.size());
-            for (int i=0;i<all.size();i++) {
+            StringBuilder builder = new StringBuilder();
+            builder.append("数据条数：").append(all.size()).append("\n");
+            for (int i = 0; i < all.size(); i++) {
                 DataBean dataBean = all.get(i);
                 String date = dataBean.getDate();
                 Boolean xiaBanDaka = dataBean.getXiaBanDaka();
                 Boolean shangBanDaka = dataBean.getShangBanDaka();
                 Log.e("xx", date + xiaBanDaka + shangBanDaka);
+                builder.append(i).append(":").append(date).append("上班：").append(shangBanDaka).append("  下班：").append(xiaBanDaka).append("\n");
+            }
+            tvContent.setText(builder.toString());
+        });
+
+        findViewById(R.id.clear).setOnClickListener(v -> {
+            LitePal.deleteAll(DataBean.class);
+        });
+
+        findViewById(R.id.mockShangBan).setOnClickListener(v -> {
+            DataBean bean = LitePal.findLast(DataBean.class);
+            if (bean != null) {
+                bean.setShangBanDaka(true);
+                bean.saveOrUpdate();
             }
         });
 
-        findViewById(R.id.clear).setOnClickListener(v->{
-            LitePal.deleteAll(DataBean.class);
+        findViewById(R.id.mockXiaBan).setOnClickListener(v -> {
+            DataBean bean = LitePal.findLast(DataBean.class);
+            if (bean != null) {
+                bean.setXiaBanDaka(true);
+                bean.saveOrUpdate();
+            }
         });
+
+        findViewById(R.id.mockXiaBanTime).setOnClickListener(v -> {
+            mockXiaTime = true;
+        });
+        findViewById(R.id.mockShangBanTime).setOnClickListener(v -> {
+            mockShangWuTime = true;
+        });
+        findViewById(R.id.dayPlus1).setOnClickListener(v -> {
+            mockDayPlus1 = true;
+        });
+        findViewById(R.id.mockClearTime).setOnClickListener(v -> {
+            mockShangWuTime = false;
+            mockXiaTime = false;
+            mockDayPlus1 = false;
+        });
+
+
     }
 
     //权限打开
@@ -83,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
             //无需处理了
         }
     }
-
 
 
 }

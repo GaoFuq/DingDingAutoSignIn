@@ -35,9 +35,7 @@
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files>
-      <object connection-id="4b864355-f63d-4e9a-b65d-f0647614c210" object-ref="schemas/main/tables/databean" />
-    </open-files>
+    <open-files />
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="4b864355-f63d-4e9a-b65d-f0647614c210" />
