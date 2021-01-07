@@ -20,4 +20,22 @@
         android:text="开启无障碍"
         android:layout_width="match_parent"
         android:layout_height="50dp"/>
+
+    <Button
+        android:id="@+id/write"
+        android:text="写入数据"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+
+    <Button
+    android:id="@+id/read"
+    android:text="读取数据"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"/>
+
+    <Button
+        android:id="@+id/clear"
+        android:text="清除数据"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
 </LinearLayout>

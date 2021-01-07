@@ -6,16 +6,22 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.litepal.LitePal;
+
+import java.time.LocalDate;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,15 +41,31 @@ public class MainActivity extends AppCompatActivity {
             requestSettingCanDrawOverlays();
         });
 
-        //无障碍的服务不需要手动开启
-//        findViewById(R.id.openService).setOnClickListener(v -> {
-////            Intent intent = new Intent();
-////            intent.setComponent(new ComponentName("com.gfq.usefuldemocollections", "MyAcceService"));
-//            startService(new Intent(this,MyAcceService.class));
-//        });
 
         findViewById(R.id.openAuto).setOnClickListener(v -> {
             startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
+        });
+
+        findViewById(R.id.write).setOnClickListener(v -> {
+            DataBean dataBean = new DataBean();
+            dataBean.setDate(LocalDate.now().toString());
+            dataBean.saveOrUpdate();
+        });
+
+        findViewById(R.id.read).setOnClickListener(v -> {
+            List<DataBean> all = LitePal.findAll(DataBean.class);
+            Log.e("xx", "size = " + all.size());
+            for (int i=0;i<all.size();i++) {
+                DataBean dataBean = all.get(i);
+                String date = dataBean.getDate();
+                Boolean xiaBanDaka = dataBean.getXiaBanDaka();
+                Boolean shangBanDaka = dataBean.getShangBanDaka();
+                Log.e("xx", date + xiaBanDaka + shangBanDaka);
+            }
+        });
+
+        findViewById(R.id.clear).setOnClickListener(v->{
+            LitePal.deleteAll(DataBean.class);
         });
     }
 
@@ -60,15 +82,6 @@ public class MainActivity extends AppCompatActivity {
         } else {//4.4-6.0以下
             //无需处理了
         }
-    }
-
-    private void openDD() {
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_MAIN);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setComponent(new ComponentName("com.alibaba.android.rimet", "com.alibaba.android.rimet.biz.LaunchHomeActivity"));
-//        intent.setComponent(new ComponentName("com.gfq.main","com.gfq.main.MainAppActivity"));
-        startActivity(intent);
     }
 
 

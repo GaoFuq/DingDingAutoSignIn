@@ -5,7 +5,7 @@
     android:accessibilityEventTypes="typeWindowContentChanged"
     android:accessibilityFlags="flagDefault"
     android:accessibilityFeedbackType="feedbackGeneric"
-    android:notificationTimeout="100"
+    android:notificationTimeout="200"
     android:canRetrieveWindowContent="true"
     />
 <!-- android:packageNames="com.alibaba.android.rimet" -->
