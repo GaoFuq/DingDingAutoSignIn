@@ -15,6 +15,7 @@ import org.litepal.LitePal
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.*
+import kotlin.random.Random
 
 @RequiresApi(Build.VERSION_CODES.O)
 class MyAcceService : AccessibilityService() {
@@ -104,8 +105,8 @@ class MyAcceService : AccessibilityService() {
                     desc = "在下班打卡时间范围内"
                     workTime = XIA_BAN
                     timeEnough = true
-                }else{
-                    desc = "不在下班打卡时间范围内"
+                } else {
+                    desc = "准备下班打卡"
                 }
                 floatView?.setText(" $time \n repeat: $count \n $desc")
                 return timeEnough
@@ -116,16 +117,17 @@ class MyAcceService : AccessibilityService() {
                 var desc = "准备上班打卡"
                 var timeEnough = false
                 workTime = DEFALUT
-                if (time.hour == 8 && time.minute > 10 || time.hour in 9..10) {
+                if (time.hour == 8 && time.minute > (14..33).random() || time.hour in 9..10) {
                     desc = "在上班打卡时间范围内"
                     workTime = SHANG_BAN
                     timeEnough = true
-                }else{
-                    desc = "不在上班打卡时间范围内"
+                } else {
+                    desc = "准备上班打卡"
                 }
                 floatView?.setText(" $time \n repeat: $count \n $desc")
                 return timeEnough
             }
+
 
 
             private fun createAndSaveBean() {
@@ -193,7 +195,7 @@ class MyAcceService : AccessibilityService() {
         val clicked = handleClick(xiaBanButton, backLayout)
         val dataBean = LitePal.findLast(DataBean::class.java)
         dataBean.xiaBanDaka = clicked
-        dataBean.saveOrUpdate()
+        dataBean.save()
     }
 
     private fun shangBanDaka(nodeInfo: AccessibilityNodeInfo, backLayout: AccessibilityNodeInfo) {
@@ -203,7 +205,7 @@ class MyAcceService : AccessibilityService() {
         val clicked = handleClick(shangBanButton, backLayout)
         val dataBean = LitePal.findLast(DataBean::class.java)
         dataBean.shangBanDaka = clicked
-        dataBean.saveOrUpdate()
+        dataBean.save()
     }
 
     private fun getDakaArea(nodeInfo: AccessibilityNodeInfo): AccessibilityNodeInfo? {

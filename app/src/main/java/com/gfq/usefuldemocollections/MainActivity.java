@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.write).setOnClickListener(v -> {
             DataBean dataBean = new DataBean();
             dataBean.setDate(LocalDate.now().toString());
-            dataBean.saveOrUpdate();
+            dataBean.save();
         });
 
         TextView tvContent = findViewById(R.id.content);
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
             DataBean bean = LitePal.findLast(DataBean.class);
             if (bean != null) {
                 bean.setShangBanDaka(true);
-                bean.saveOrUpdate();
+                bean.save();
             }
         });
 
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             DataBean bean = LitePal.findLast(DataBean.class);
             if (bean != null) {
                 bean.setXiaBanDaka(true);
-                bean.saveOrUpdate();
+                bean.save();
             }
         });
 
