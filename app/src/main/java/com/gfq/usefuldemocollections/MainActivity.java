@@ -8,10 +8,13 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.gfq.usefuldemocollections.view.FormView;
 
 import org.litepal.LitePal;
 
@@ -23,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     public static boolean mockShangWuTime = false;
     public static boolean mockXiaTime = false;
     public static boolean mockDayPlus1 = false;
-
+    LinearLayout llContent;
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,27 +56,18 @@ public class MainActivity extends AppCompatActivity {
             DataBean dataBean = new DataBean();
             dataBean.setDate(LocalDate.now().toString());
             dataBean.save();
+            showData();
         });
 
-        TextView tvContent = findViewById(R.id.content);
+         llContent = findViewById(R.id.contentll);
 
         findViewById(R.id.read).setOnClickListener(v -> {
-            List<DataBean> all = LitePal.findAll(DataBean.class);
-            StringBuilder builder = new StringBuilder();
-            builder.append("数据条数：").append(all.size()).append("\n");
-            for (int i = 0; i < all.size(); i++) {
-                DataBean dataBean = all.get(i);
-                String date = dataBean.getDate();
-                Boolean xiaBanDaka = dataBean.getXiaBanDaka();
-                Boolean shangBanDaka = dataBean.getShangBanDaka();
-                Log.e("xx", date + xiaBanDaka + shangBanDaka);
-                builder.append(i).append(":").append(date).append("上班：").append(shangBanDaka).append("  下班：").append(xiaBanDaka).append("\n");
-            }
-            tvContent.setText(builder.toString());
+           showData();
         });
 
         findViewById(R.id.clear).setOnClickListener(v -> {
             LitePal.deleteAll(DataBean.class);
+            llContent.removeAllViews();
         });
 
         findViewById(R.id.mockShangBan).setOnClickListener(v -> {
@@ -82,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 bean.setShangBanDaka(true);
                 bean.save();
             }
+            showData();
         });
 
         findViewById(R.id.mockXiaBan).setOnClickListener(v -> {
@@ -90,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 bean.setXiaBanDaka(true);
                 bean.save();
             }
+            showData();
         });
 
         findViewById(R.id.mockXiaBanTime).setOnClickListener(v -> {
@@ -108,6 +104,24 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void showData() {
+        llContent.removeAllViews();
+        List<DataBean> all = LitePal.findAll(DataBean.class);
+        for (int i = 0; i < all.size(); i++) {
+            DataBean dataBean = all.get(i);
+            String date = dataBean.getDate();
+            boolean xiaBanDaka = dataBean.isXiaBanDaka();
+            boolean shangBanDaka = dataBean.isShangBanDaka();
+            Log.e("xx", date + xiaBanDaka + shangBanDaka);
+            FormView formView = new FormView(this);
+            formView.tvDate.setText(date);
+            formView.tvSB.setText(shangBanDaka?"已打卡":"未打卡");
+            formView.tvXB.setText(xiaBanDaka?"已打卡":"未打卡");
+            formView.tvTime.setText(dataBean.getTime());
+            llContent.addView(formView);
+        }
     }
 
     //权限打开

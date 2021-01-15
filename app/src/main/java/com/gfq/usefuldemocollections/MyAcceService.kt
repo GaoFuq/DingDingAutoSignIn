@@ -30,7 +30,7 @@ class MyAcceService : AccessibilityService() {
     //修改时间，模拟上午或者下午
     private fun modifyTimeIfNeed(): LocalTime {
         if (mockShangWuTime) {
-            return LocalTime.of(8, 20)
+            return LocalTime.of(9,10)
         }
         if (mockXiaTime) {
             return LocalTime.of(18, 40)
@@ -74,8 +74,8 @@ class MyAcceService : AccessibilityService() {
 
             private fun mainLogic(data: DataBean) {
                 floatView?.setText("当前日期：${data.date}")
-                val isShangBanDaka = data.shangBanDaka
-                val isXiaBanDaka = data.xiaBanDaka
+                val isShangBanDaka = data.isShangBanDaka
+                val isXiaBanDaka = data.isXiaBanDaka
                 if (isShangBanDaka && isXiaBanDaka) {
                     floatView?.setText(" ${LocalDate.now()} \n ${LocalTime.now()} \n 都已打卡")
                     return
@@ -117,7 +117,7 @@ class MyAcceService : AccessibilityService() {
                 var desc = "准备上班打卡"
                 var timeEnough = false
                 workTime = DEFALUT
-                if (time.hour == 8 && time.minute > (14..33).random() || time.hour in 9..10) {
+                if (time.hour == 8 && time.minute > (25..33).random() || time.hour == 9) {
                     desc = "在上班打卡时间范围内"
                     workTime = SHANG_BAN
                     timeEnough = true
@@ -190,21 +190,21 @@ class MyAcceService : AccessibilityService() {
 
     private fun xiaBanDaka(nodeInfo: AccessibilityNodeInfo, backLayout: AccessibilityNodeInfo) {
         val child = getDakaArea(nodeInfo)
-        //        val shangBanButton = child?.getChild(0)?.getChild(0)?.getChild(2)//上班打卡按钮
         val xiaBanButton = child?.getChild(1)?.getChild(0)?.getChild(2)//下班打卡按钮
         val clicked = handleClick(xiaBanButton, backLayout)
         val dataBean = LitePal.findLast(DataBean::class.java)
-        dataBean.xiaBanDaka = clicked
+        dataBean.isXiaBanDaka = clicked
+        dataBean.time = LocalTime.now().toString()
         dataBean.save()
     }
 
     private fun shangBanDaka(nodeInfo: AccessibilityNodeInfo, backLayout: AccessibilityNodeInfo) {
         val child = getDakaArea(nodeInfo)
         val shangBanButton = child?.getChild(0)?.getChild(0)?.getChild(2)//上班打卡按钮
-//        val xiaBanButton = child?.getChild(1)?.getChild(0)?.getChild(2)//下班打卡按钮
         val clicked = handleClick(shangBanButton, backLayout)
         val dataBean = LitePal.findLast(DataBean::class.java)
-        dataBean.shangBanDaka = clicked
+        dataBean.isShangBanDaka = clicked
+        dataBean.time = LocalTime.now().toString()
         dataBean.save()
     }
 
