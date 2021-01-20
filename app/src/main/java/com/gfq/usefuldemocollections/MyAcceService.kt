@@ -30,7 +30,7 @@ class MyAcceService : AccessibilityService() {
     //修改时间，模拟上午或者下午
     private fun modifyTimeIfNeed(): LocalTime {
         if (mockShangWuTime) {
-            return LocalTime.of(9,10)
+            return LocalTime.of(9, 10)
         }
         if (mockXiaTime) {
             return LocalTime.of(18, 40)
@@ -129,7 +129,6 @@ class MyAcceService : AccessibilityService() {
             }
 
 
-
             private fun createAndSaveBean() {
                 val dataBean = DataBean()
                 dataBean.date = modifyDateIfNeed().toString()
@@ -192,10 +191,12 @@ class MyAcceService : AccessibilityService() {
         val child = getDakaArea(nodeInfo)
         val xiaBanButton = child?.getChild(1)?.getChild(0)?.getChild(2)//下班打卡按钮
         val clicked = handleClick(xiaBanButton, backLayout)
-        val dataBean = LitePal.findLast(DataBean::class.java)
-        dataBean.isXiaBanDaka = clicked
-        dataBean.time = LocalTime.now().toString()
-        dataBean.save()
+        if (clicked) {
+            val dataBean = LitePal.findLast(DataBean::class.java)
+            dataBean.isXiaBanDaka = clicked
+            dataBean.xbTime = LocalTime.now().hour.toString() + LocalTime.now().minute.toString()
+            dataBean.save()
+        }
     }
 
     private fun shangBanDaka(nodeInfo: AccessibilityNodeInfo, backLayout: AccessibilityNodeInfo) {
@@ -203,9 +204,11 @@ class MyAcceService : AccessibilityService() {
         val shangBanButton = child?.getChild(0)?.getChild(0)?.getChild(2)//上班打卡按钮
         val clicked = handleClick(shangBanButton, backLayout)
         val dataBean = LitePal.findLast(DataBean::class.java)
-        dataBean.isShangBanDaka = clicked
-        dataBean.time = LocalTime.now().toString()
-        dataBean.save()
+        if (clicked) {
+            dataBean.isShangBanDaka = clicked
+            dataBean.sbTime = LocalTime.now().hour.toString() + LocalTime.now().minute.toString()
+            dataBean.save()
+        }
     }
 
     private fun getDakaArea(nodeInfo: AccessibilityNodeInfo): AccessibilityNodeInfo? {

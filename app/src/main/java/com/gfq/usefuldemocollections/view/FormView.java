@@ -15,7 +15,7 @@ import com.gfq.usefuldemocollections.R;
  */
 public class FormView extends FrameLayout {
 
-    public TextView tvDate, tvSB, tvXB, tvTime;
+    public TextView tvDate, tvSB, tvXB, tvSBTime,tvXBTime;
 
     public FormView(Context context) {
         super(context);
@@ -27,7 +27,8 @@ public class FormView extends FrameLayout {
         tvDate = inflate.findViewById(R.id.tvDate);
         tvSB = inflate.findViewById(R.id.tvSB);
         tvXB = inflate.findViewById(R.id.tvXB);
-        tvTime = inflate.findViewById(R.id.tvTime);
+        tvSBTime = inflate.findViewById(R.id.tvSBTime);
+        tvXBTime = inflate.findViewById(R.id.tvXBTime);
     }
 
 

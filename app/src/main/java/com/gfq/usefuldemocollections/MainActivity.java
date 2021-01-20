@@ -117,9 +117,10 @@ public class MainActivity extends AppCompatActivity {
             Log.e("xx", date + xiaBanDaka + shangBanDaka);
             FormView formView = new FormView(this);
             formView.tvDate.setText(date);
-            formView.tvSB.setText(shangBanDaka?"已打卡":"未打卡");
-            formView.tvXB.setText(xiaBanDaka?"已打卡":"未打卡");
-            formView.tvTime.setText(dataBean.getTime());
+            formView.tvSB.setText(shangBanDaka?"√":"×");
+            formView.tvXB.setText(xiaBanDaka?"√":"×");
+            formView.tvSBTime.setText(dataBean.getSbTime());
+            formView.tvXBTime.setText(dataBean.getXbTime());
             llContent.addView(formView);
         }
     }

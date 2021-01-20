@@ -11,9 +11,26 @@ import java.time.LocalDateTime;
 
 public class DataBean extends LitePalSupport {
     private String date ;//日期
-    private String time ;//打卡时间
+    private String sbTime ;//打卡时间
+    private String xbTime ;//打卡时间
     private boolean isShangBanDaka = false;
     private boolean isXiaBanDaka = false;
+
+    public String getSbTime() {
+        return sbTime;
+    }
+
+    public void setSbTime(String sbTime) {
+        this.sbTime = sbTime;
+    }
+
+    public String getXbTime() {
+        return xbTime;
+    }
+
+    public void setXbTime(String xbTime) {
+        this.xbTime = xbTime;
+    }
 
     public boolean isShangBanDaka() {
         return isShangBanDaka;
@@ -31,13 +48,6 @@ public class DataBean extends LitePalSupport {
         isXiaBanDaka = xiaBanDaka;
     }
 
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
 
     public String getDate() {
         return date;

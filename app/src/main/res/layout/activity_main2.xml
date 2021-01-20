@@ -110,45 +110,64 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
-            android:background="#363636"
-            android:padding="5dp"
-            android:textSize="16sp"
-            android:text="日期"
-            android:gravity="center"
-            android:textColor="#fff"
+            android:id="@+id/tvDate"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_height="wrap_content"/>
-        <TextView
             android:background="#363636"
+            android:gravity="center"
             android:padding="5dp"
-            android:textSize="16sp"
+            android:text="日期"
+            android:textColor="#fff"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvSB"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:background="#363636"
+            android:gravity="center"
+            android:padding="5dp"
             android:text="上班"
-            android:gravity="center"
             android:textColor="#fff"
-            android:layout_width="0dp"
-            android:layout_weight="0.7"
-            android:layout_height="wrap_content"/>
+            android:textSize="16sp" />
+
         <TextView
+            android:id="@+id/tvSBTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="#363636"
-            android:padding="5dp"
-            android:textSize="16sp"
             android:gravity="center"
-            android:text="下班"
-            android:textColor="#fff"
-            android:layout_width="0dp"
-            android:layout_weight="0.7"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:background="#363636"
             android:padding="5dp"
-            android:textSize="16sp"
             android:text="打卡时间"
             android:textColor="#fff"
-            android:gravity="center"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvXB"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:background="#363636"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="下班"
+            android:textColor="#fff"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvXBTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_height="wrap_content"/>
+            android:background="#363636"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="打卡时间"
+            android:textColor="#fff"
+            android:textSize="16sp" />
     </LinearLayout>
   <LinearLayout
       android:id="@+id/contentll"
