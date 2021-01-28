@@ -14,7 +14,6 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.gfq.usefuldemocollections.view.FormView;
 
 import org.litepal.LitePal;
 
